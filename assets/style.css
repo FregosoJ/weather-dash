@@ -1,0 +1,34 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(186, 161, 240);
+    width: 100%;
+    min-height: 100%;
+    font-family: sans-serif;
+}
+
+body {
+    width: 100%;
+    height: 800px;
+    background-color: var(--l13);
+    padding: 10px;
+    color: var(--l1);
+    font-family: "Roboto", sans-serif;
+}
+
+#textInput {
+    width: auto;
+}
+
+#add-input {
+    color: blue;
+}
+
+#citList {
+    text-decoration: wavy;
+}
