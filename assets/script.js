@@ -1,27 +1,46 @@
-var weatherApi = 'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=8b9ac2820b4fe9397f31d21cf1bef67e';
+var weatherApi = 'https://bulk.openweathermap.org/snapshot/weather_16.json.gz?appid=8b9ac2820b4fe9397f31d21cf1bef67e';
+
 // var cityName = document.querySelector('#city-input');
 var addCityButton = document.querySelector('#add-input');
 var cityInput = document.querySelector('#add-input');
 var textInput = document.querySelector("#textInput");
+var apiKey = "id=8b9ac2820b4fe9397f31d21cf1bef67e"
+
+console.log(weatherApi)
 
 var cityCodes = [];
-var selectedCities = [];                                               // this changes to f from kelvin
+var selectedCities = [];                                          // this changes to f from kelvin
 var apiTest = 'https://api.openweathermap.org/data/2.5/forecast?&units=imperial&lat=44.34&lon=10.99&appid=8b9ac2820b4fe9397f31d21cf1bef67e';
 
 // Api calls 
 var apiCalls = {
-    cityLat: "city.coord.lat",
-    cityLong: "city.coord.lon",
-    name: "city.name",
-    icon: "list.weather.icon",
-    temp: "list.main.temp",
-    humidity: "list.main.humidity",
-    wind: "list.wind.speed"
+    cityLat: "data.city.coord.lat",
+    cityLong: "dat.city.coord.lon",
+    name: "data.city.name",
+    icon: "data.list[0].weather[0].icon",
+    temp: "data.list.main.temp",
+    humidity: "data.list.main.humidity",
+    wind: "data.list.wind.speed"
 }
 // current weather shows the name of he city, the date, an icon representation of the weather condition,
 // the temp, humidity, and wind speed.
 
-// console.log(apiTest.length)
+function makeCityInfo(){
+    var cityInfo = [];
+    if (selectedCities.length){
+        var cityScore = JSON.parse(localStorage.getItem("cityScoreOne"));
+        var cityDetails = JSON.parse(localStorage.getItem("cityDetailsOne"));
+        var weatherIcon = JSON.parse(localStorage.getItem("cityImagesOne"));
+        var cityName = JSON.parse(localStorage.getItem("selected cities"));
+        var city = {
+            name: cityName,
+            score: cityScore,
+            details: cityDetails,
+            images: weatherIcon
+        }
+        cityInfo.push(city);
+    }
+}
 
 // search a city 
 addCityButton.addEventListener("click", function () { //
@@ -37,6 +56,12 @@ addCityButton.addEventListener("click", function () { //
 
             // you can right click on what u want in the properties to get the path
             //setting data 
+            // document.querySelector(".name1").textContent = data.list[0].clouds
+            // document.querySelector(".name").textContent = data.city[7].coord.name
+            // document.querySelector(".name").textContent = data.city[15].coord.name
+            // document.querySelector(".name").textContent = data.city[23].coord.name
+            // document.querySelector(".name").textContent = data.city[31].coord.name
+
             document.querySelector(".temp1").textContent = data.list[0].main.temp
             document.querySelector(".temp2").textContent = data.list[7].main.temp
             document.querySelector(".temp3").textContent = data.list[15].main.temp
@@ -55,40 +80,12 @@ addCityButton.addEventListener("click", function () { //
             document.querySelector(".wind4").textContent = data.list[23].wind.speed
             document.querySelector(".wind5").textContent = data.list[31].wind.speed
         })
+
 })
 
-addCityButton.addEventListener("click", function () { //
-    selectedCities.push(textInput.value)
-    localStorage.setItem("cities", selectedCities)
-    fetch(apiTest)
-        .then(res => res.json()) // res=response
-        .then(data => {
-            console.log(data)
-            var button = document.createElement("li")
-            document.querySelector("#citList2").appendChild(button)
-            button.textContent = textInput.value
 
-            // you can right click on what u want in the properties to get the path
-            //setting data 
-            document.querySelector(".temp1").textContent = data.list[0].main.temp
-            document.querySelector(".temp2").textContent = data.list[7].main.temp
-            document.querySelector(".temp3").textContent = data.list[15].main.temp
-            document.querySelector(".temp4").textContent = data.list[23].main.temp
-            document.querySelector(".temp5").textContent = data.list[31].main.temp
-            // make new 35 and 37 to new path for the requierd elements
-            document.querySelector(".hum1").textContent = data.list[0].main.humidity
-            document.querySelector(".hum2").textContent = data.list[7].main.humidity
-            document.querySelector(".hum3").textContent = data.list[15].main.humidity
-            document.querySelector(".hum4").textContent = data.list[23].main.humidity
-            document.querySelector(".hum5").textContent = data.list[31].main.humidity
-            // make new 35 and 37 to new path for the requierd elements
-            document.querySelector(".wind1").textContent = data.list[0].wind.speed
-            document.querySelector(".wind2").textContent = data.list[7].wind.speed
-            document.querySelector(".wind3").textContent = data.list[15].wind.speed
-            document.querySelector(".wind4").textContent = data.list[23].wind.speed
-            document.querySelector(".wind5").textContent = data.list[31].wind.speed
-        })
-})
+
+
 
 $(function () {
     var uaNames = [
